@@ -1,4 +1,4 @@
-# Awesome Project Build with TypeORM
+# ti-2-express-js
 
 Steps to run this project:
 
