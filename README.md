@@ -36,6 +36,7 @@ CREATE TABLE Autor_bibliografia(
 CREATE TABLE Curso(
     cur_ide INTEGER AUTO_INCREMENT PRIMARY KEY,
     cur_credi INTEGER,
+    cur_sem INTEGER,
     cur_hor_teo INTEGER,
     cur_hor_pra INTEGER,
     cur_hor_lab INTEGER,
