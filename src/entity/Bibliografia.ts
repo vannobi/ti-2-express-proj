@@ -1,12 +1,6 @@
-import {
-  PrimaryGeneratedColumn,
-  Column,
-  Entity,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
-
-import { Autor } from './Autor';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { AutorBibliografia } from './AutorBibliografia';
+import { BibliografiaUnidadAc } from './BibliografiaUnidadAc';
 
 @Entity()
 export class Bibliografia {
@@ -25,7 +19,12 @@ export class Bibliografia {
   @Column()
   bib_anio: number;
 
-  @ManyToMany(() => Autor)
-  @JoinTable()
-  autors: Autor[];
+  @OneToMany(() => AutorBibliografia, autorBibliografia => autorBibliografia.bibliografia)
+  autorBibliografia: AutorBibliografia[];
+
+  @OneToMany(
+    () => BibliografiaUnidadAc,
+    bibliografiaUnidadAc => bibliografiaUnidadAc.bibliografia
+  )
+  bibliografiaUnidadAc: BibliografiaUnidadAc[];
 }

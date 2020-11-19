@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { AutorBibliografia } from './AutorBibliografia';
 
 @Entity()
 export class Autor {
@@ -10,4 +11,7 @@ export class Autor {
 
   @Column({ type: 'varchar', length: 50 })
   auto_ape: string;
+
+  @OneToMany(() => AutorBibliografia, autorBibliografia => autorBibliografia.autor)
+  autorBibliografia: AutorBibliografia[];
 }

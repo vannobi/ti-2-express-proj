@@ -1,5 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
-
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { Prerequisito } from './Prerequisito';
 @Entity()
 export class Curso {
   @PrimaryGeneratedColumn()
@@ -22,4 +22,7 @@ export class Curso {
 
   @Column({ type: 'varchar', length: 15 })
   cur_cod: string;
+
+  @OneToMany(() => Prerequisito, prerequisito => prerequisito.curso)
+  prerequisito: Prerequisito[];
 }

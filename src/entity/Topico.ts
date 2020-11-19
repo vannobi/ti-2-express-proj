@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
+import { UnidadAcademica } from './UnidadAcademica';
 
 @Entity()
 export class Topico {
@@ -8,6 +9,6 @@ export class Topico {
   @Column({ type: 'varchar', length: 500 })
   top_des: string;
 
-  @Column()
-  uni_aca_ide: number;
+  @ManyToOne(() => UnidadAcademica, unidadAcademica => unidadAcademica.topico)
+  unidadAcademica: UnidadAcademica;
 }
