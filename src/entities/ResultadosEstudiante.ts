@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { SumillaResultado } from './SumillaResultado';
 
-@Entity('Resultados_estudiante', { schema: 'sumilla_db' })
+@Entity('Resultados_estudiante')
 export class ResultadosEstudiante {
   @Column('int', { primary: true, name: 'res_est_ide' })
   resEstIde: number;

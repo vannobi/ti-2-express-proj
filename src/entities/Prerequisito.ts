@@ -10,7 +10,7 @@ import { Curso } from './Curso';
 
 @Index('cur_ide', ['curIde'], {})
 @Index('cur_ide_pre', ['curIdePre'], {})
-@Entity('prerequisito', { schema: 'sumilla_db' })
+@Entity('prerequisito')
 export class Prerequisito {
   @PrimaryGeneratedColumn({ type: 'int', name: 'prere_ide' })
   prereIde: number;

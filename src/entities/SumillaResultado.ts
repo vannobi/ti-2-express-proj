@@ -11,7 +11,7 @@ import { ResultadosEstudiante } from './ResultadosEstudiante';
 
 @Index('res_est_ide', ['resEstIde'], {})
 @Index('sum_ide', ['sumIde'], {})
-@Entity('Sumilla_resultado', { schema: 'sumilla_db' })
+@Entity('Sumilla_resultado')
 export class SumillaResultado {
   @PrimaryGeneratedColumn({ type: 'int', name: 'sum_res_ide' })
   sumResIde: number;

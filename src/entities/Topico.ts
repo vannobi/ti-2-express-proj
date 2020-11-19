@@ -9,7 +9,7 @@ import {
 import { UnidadAcademica } from './UnidadAcademica';
 
 @Index('uni_aca_ide', ['uniAcaIde'], {})
-@Entity('Topico', { schema: 'sumilla_db' })
+@Entity('Topico')
 export class Topico {
   @PrimaryGeneratedColumn({ type: 'int', name: 'top_ide' })
   topIde: number;

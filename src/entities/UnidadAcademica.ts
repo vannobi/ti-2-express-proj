@@ -14,7 +14,7 @@ import { Competencia } from './Competencia';
 
 @Index('com_ide', ['comIde'], {})
 @Index('sum_ide', ['sumIde'], {})
-@Entity('Unidad_academica', { schema: 'sumilla_db' })
+@Entity('Unidad_academica')
 export class UnidadAcademica {
   @PrimaryGeneratedColumn({ type: 'int', name: 'uni_aca_ide' })
   uniAcaIde: number;

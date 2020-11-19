@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AutorBibliografia } from './AutorBibliografia';
 import { BibliografiaUnidad } from './BibliografiaUnidad';
 
-@Entity('Bibliografia', { schema: 'sumilla_db' })
+@Entity('Bibliografia')
 export class Bibliografia {
   @PrimaryGeneratedColumn({ type: 'int', name: 'bib_ide' })
   bibIde: number;

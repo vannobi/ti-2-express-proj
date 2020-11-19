@@ -4,7 +4,7 @@ import { Bibliografia } from './Bibliografia';
 
 @Index('aut_ide', ['autIde'], {})
 @Index('bib_ide', ['bibIde'], {})
-@Entity('Autor_bibliografia', { schema: 'sumilla_db' })
+@Entity('Autor_bibliografia')
 export class AutorBibliografia {
   @Column('int', { primary: true, name: 'aut_bib_ide' })
   autBibIde: number;

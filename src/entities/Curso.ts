@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Sumilla } from './Sumilla';
 import { Prerequisito } from './Prerequisito';
 
-@Entity('Curso', { schema: 'sumilla_db' })
+@Entity('Curso')
 export class Curso {
   @PrimaryGeneratedColumn({ type: 'int', name: 'cur_ide' })
   curIde: number;

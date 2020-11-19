@@ -11,7 +11,7 @@ import { UnidadAcademica } from './UnidadAcademica';
 
 @Index('bib_ide', ['bibIde'], {})
 @Index('uni_aca_ide', ['uniAcaIde'], {})
-@Entity('Bibliografia_unidad', { schema: 'sumilla_db' })
+@Entity('Bibliografia_unidad')
 export class BibliografiaUnidad {
   @PrimaryGeneratedColumn({ type: 'int', name: 'bib_uni_ide' })
   bibUniIde: number;
