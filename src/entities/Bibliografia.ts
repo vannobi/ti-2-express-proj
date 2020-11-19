@@ -1,33 +1,27 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { AutorBibliografia } from "./AutorBibliografia";
-import { BibliografiaUnidad } from "./BibliografiaUnidad";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { AutorBibliografia } from './AutorBibliografia';
+import { BibliografiaUnidad } from './BibliografiaUnidad';
 
-@Entity("Bibliografia", { schema: "sumilla_db" })
+@Entity('Bibliografia', { schema: 'sumilla_db' })
 export class Bibliografia {
-  @PrimaryGeneratedColumn({ type: "int", name: "bib_ide" })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'bib_ide' })
   bibIde: number;
 
-  @Column("varchar", { name: "bib_nom", nullable: true, length: 100 })
+  @Column('varchar', { name: 'bib_nom', nullable: true, length: 100 })
   bibNom: string | null;
 
-  @Column("varchar", { name: "bib_edici", nullable: true, length: 100 })
+  @Column('varchar', { name: 'bib_edici', nullable: true, length: 100 })
   bibEdici: string | null;
 
-  @Column("varchar", { name: "bib_edito", nullable: true, length: 100 })
+  @Column('varchar', { name: 'bib_edito', nullable: true, length: 100 })
   bibEdito: string | null;
 
-  @Column("int", { name: "bib_anio", nullable: true })
+  @Column('int', { name: 'bib_anio', nullable: true })
   bibAnio: number | null;
 
-  @OneToMany(
-    () => AutorBibliografia,
-    (autorBibliografia) => autorBibliografia.bibIde2
-  )
+  @OneToMany(() => AutorBibliografia, autorBibliografia => autorBibliografia.bibIde2)
   autorBibliografias: AutorBibliografia[];
 
-  @OneToMany(
-    () => BibliografiaUnidad,
-    (bibliografiaUnidad) => bibliografiaUnidad.bibIde2
-  )
+  @OneToMany(() => BibliografiaUnidad, bibliografiaUnidad => bibliografiaUnidad.bibIde2)
   bibliografiaUnidads: BibliografiaUnidad[];
 }
