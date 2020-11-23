@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   Index,
@@ -11,7 +12,7 @@ import { Curso } from './Curso';
 @Index('cur_ide', ['curIde'], {})
 @Index('cur_ide_pre', ['curIdePre'], {})
 @Entity('prerequisito')
-export class Prerequisito {
+export class Prerequisito extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'prere_ide' })
   prereIde: number;
 

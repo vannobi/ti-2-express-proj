@@ -1,12 +1,20 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Autor } from './Autor';
 import { Bibliografia } from './Bibliografia';
 
 @Index('aut_ide', ['autIde'], {})
 @Index('bib_ide', ['bibIde'], {})
 @Entity('Autor_bibliografia')
-export class AutorBibliografia {
-  @Column('int', { primary: true, name: 'aut_bib_ide' })
+export class AutorBibliografia extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'int', name: 'aut_bib_ide' })
   autBibIde: number;
 
   @Column('int', { name: 'aut_ide', nullable: true })

@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SumillaResultado } from './SumillaResultado';
 
 @Entity('Resultados_estudiante')
-export class ResultadosEstudiante {
-  @Column('int', { primary: true, name: 'res_est_ide' })
+export class ResultadosEstudiante extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'int', name: 'res_est_ide' })
   resEstIde: number;
 
   @Column('varchar', { name: 'rest_est_cod', nullable: true, length: 10 })

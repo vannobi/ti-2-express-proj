@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AutorBibliografia } from './AutorBibliografia';
 import { BibliografiaUnidad } from './BibliografiaUnidad';
 
 @Entity('Bibliografia')
-export class Bibliografia {
+export class Bibliografia extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'bib_ide' })
   bibIde: number;
 

@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   Index,
@@ -12,7 +13,7 @@ import { ResultadosEstudiante } from './ResultadosEstudiante';
 @Index('res_est_ide', ['resEstIde'], {})
 @Index('sum_ide', ['sumIde'], {})
 @Entity('Sumilla_resultado')
-export class SumillaResultado {
+export class SumillaResultado extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'sum_res_ide' })
   sumResIde: number;
 

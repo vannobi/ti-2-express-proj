@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   Index,
@@ -12,7 +13,7 @@ import { UnidadAcademica } from './UnidadAcademica';
 @Index('bib_ide', ['bibIde'], {})
 @Index('uni_aca_ide', ['uniAcaIde'], {})
 @Entity('Bibliografia_unidad')
-export class BibliografiaUnidad {
+export class BibliografiaUnidad extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'bib_uni_ide' })
   bibUniIde: number;
 

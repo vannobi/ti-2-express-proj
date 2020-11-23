@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Sumilla } from './Sumilla';
 import { Prerequisito } from './Prerequisito';
 
 @Entity('Curso')
-export class Curso {
+export class Curso extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'cur_ide' })
   curIde: number;
 

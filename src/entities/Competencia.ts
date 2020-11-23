@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SumillaCompetencia } from './SumillaCompetencia';
 import { UnidadAcademica } from './UnidadAcademica';
 
 @Entity('Competencia')
-export class Competencia {
+export class Competencia extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'com_ide' })
   comIde: number;
 
