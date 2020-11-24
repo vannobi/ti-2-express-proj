@@ -26,7 +26,7 @@ CREATE TABLE Bibliografia(
 );
 
 CREATE TABLE Autor_bibliografia(
-    aut_bib_ide INTEGER PRIMARY KEY,
+    aut_bib_ide INTEGER AUTO_INCREMENT PRIMARY KEY,
     aut_ide INTEGER,
     bib_ide INTEGER,
     FOREIGN KEY (aut_ide) REFERENCES Autor(aut_ide),
@@ -90,7 +90,7 @@ CREATE TABLE Sumilla_competencia(
 );
 
 CREATE TABLE Resultados_estudiante(
-    res_est_ide INTEGER PRIMARY KEY,
+    res_est_ide INTEGER AUTO_INCREMENT PRIMARY KEY,
     rest_est_cod VARCHAR(10),
     res_est_nom VARCHAR(50),
     res_est_des VARCHAR(300)
