@@ -117,7 +117,7 @@ CREATE TABLE prerequisitos(
 ```
 
 ## POST http requests:
-### Sumillas & prerequisitos
+### Curso & prerequisitos
 Para insertar un Curso con sus prerequisitos, se necesitan los Cursos IDs de los prerequisitos
 
 ```json
