@@ -1,63 +1,91 @@
 import 'reflect-metadata';
+import express from 'express';
 import { createConnection } from 'typeorm';
-import * as express from 'express';
-// import * as bodyParser from 'body-parser';
-import { Request, Response } from 'express';
+import path from 'path';
+import { Request, Response, NextFunction } from 'express';
+import { Autor } from './entities/Autor';
+import { AutorBibliografia } from './entities/AutorBibliografia';
+import { Bibliografia } from './entities/Bibliografia';
+import { BibliografiaUnidad } from './entities/BibliografiaUnidad';
+import { Competencia } from './entities/Competencia';
+import { Curso } from './entities/Curso';
+import { Prerequisito } from './entities/Prerequisito';
+import { ResultadosEstudiante } from './entities/ResultadosEstudiante';
+import { Sumilla } from './entities/Sumilla';
+import { SumillaCompetencia } from './entities/SumillaCompetencia';
+import { SumillaResultado } from './entities/SumillaResultado';
+import { Topico } from './entities/Topico';
+import { UnidadAcademica } from './entities/UnidadAcademica';
 import { Routes } from './routes';
-import { Sumilla } from './entity/Sumilla';
-import { Curso } from './entity/Curso';
+const PORT = 3000;
 
-createConnection()
-  .then(async (connection) => {
-    // create express app
-    const app = express();
-    app.use(express.json());
+const main = async () => {
+  const app = express() as any;
+  app.use(express.json());
+  const conn = await createConnection({
+    type: 'mysql',
+    host: 'localhost',
+    logging: true,
+    port: 3306,
+    username: 'test',
+    password: 'test',
+    database: 'test',
+    synchronize: true,
+    migrations: [path.join(__dirname, './migrations/*')],
+    entities: [
+      Autor,
+      AutorBibliografia,
+      Bibliografia,
+      BibliografiaUnidad,
+      Competencia,
+      Curso,
+      Prerequisito,
+      ResultadosEstudiante,
+      Sumilla,
+      SumillaCompetencia,
+      SumillaResultado,
+      ResultadosEstudiante,
+      Topico,
+      UnidadAcademica,
+    ],
+  });
 
-    // register express routes from defined application routes
-    Routes.forEach((route) => {
-      (app as any)[route.method](
-        route.route,
-        (req: Request, res: Response, next: Function) => {
-          const result = new (route.controller as any)()[route.action](
-            req,
-            res,
-            next
-          );
-          if (result instanceof Promise) {
-            result.then((result) =>
-              result !== null && result !== undefined
-                ? res.send(result)
-                : undefined
-            );
-          } else if (result !== null && result !== undefined) {
-            res.json(result);
-          }
-        }
-      );
-    });
+  Routes.forEach(route => {
+    let controller = new route.controller() as any;
+    if (route.action === 'one') {
+      app.get(route.route, async (req: Request, res: Response, next: NextFunction) => {
+        const result = await controller.one(req, res, next).catch(error => {
+          res.json(error);
+        });
+        res.json(result);
+      });
+    } else if (route.action === 'all') {
+      app.get(route.route, async (req: Request, res: Response, next: NextFunction) => {
+        const result = await controller.all(req, res, next).catch(error => {
+          res.json(error);
+        });
+        res.json(result);
+      });
+    } else if (route.action === 'save') {
+      app.post(route.route, async (req: Request, res: Response, next: NextFunction) => {
+        const result = await controller.save(req, res, next).catch(error => {
+          res.json(error);
+        });
+        res.json(result);
+      });
+    } else if (route.action === 'remove') {
+      app.delete(route.route, async (req: Request, res: Response, next: NextFunction) => {
+        const result = await controller.remove(req, res, next).catch(error => {
+          res.json(error);
+        });
+        res.json(result);
+      });
+    }
+  });
+  app.listen(PORT);
+  console.log(`listening on ${PORT}`);
+};
 
-    // setup express app here
-    // ...
-
-    // start express server
-    app.listen(3000);
-
-    // const curso = new Curso();
-    // curso.cur_credi = 6;
-    // curso.cur_hor_lab = 2;
-    // curso.cur_hor_pra = 2;
-    // curso.cur_hor_teo = 2;
-    // curso.cur_nom = 'Astronomy';
-    // curso.cur_cod = '1C812C3';
-    // await connection.manager.save(curso);
-
-    // const sumilla = new Sumilla();
-    // sumilla.sum_curso = curso;
-    // sumilla.sum_fund = '7777777777777777';
-    // await connection.manager.save(sumilla);
-
-    console.log(
-      'Express server has started on port 3000. Open http://localhost:3000/cursos to see results'
-    );
-  })
-  .catch((error) => console.log(error));
+main().catch(error => {
+  console.log(error);
+});
