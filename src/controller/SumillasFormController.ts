@@ -50,7 +50,7 @@ export class SumillasFormController {
           if (bib.new) {
             // parse bibtex
             console.log('BIBTEX__________________');
-            const Book = extractBookFeatures(`${bib.bibtex}`);
+            const Book = extractBookFeatures(bib.bibtex);
             console.log(Book);
           } else if (!bib.new && bib.bibIde) {
             // insert with bib.bibIde

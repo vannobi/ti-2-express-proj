@@ -6,6 +6,7 @@ Steps to run this project:
 2. After installing node, install yarn. Run: `npm i -g yarn`
 3. Run: `yarn` command
 4. Run: `docker-compose up` command
+5. Run: `yarn build` command
 5. Run: `yarn start` command
 
 * [ORM documentation](https://github.com/typeorm/typeorm/tree/master/docs)
@@ -113,3 +114,21 @@ CREATE TABLE prerequisitos(
     FOREIGN KEY (cur_ide_pre) REFERENCES Curso(cur_ide)
 );
 ```
+
+## POST http requests:
+### Sumillas & prerequisitos
+Para insertar un Curso con sus prerequisitos, se necesitan los Cursos IDs de los prerequisitos
+
+```json
+{
+  "curCredi": 1,
+  "curSem": 1,
+  "curHorTeo": 1,
+  "curHorPra": 1,
+  "curHorLab": 1,
+  "curNom": "Math II",
+  "curCod": "X1XOLAP",
+  "prerequisitos": [4]
+}
+```
+
