@@ -53,6 +53,7 @@ CREATE TABLE Competencia(
 
 CREATE TABLE Sumilla(
     sum_ide INTEGER AUTO_INCREMENT PRIMARY KEY,
+    sum_version INTEGER,
     sum_curso INTEGER,
     sum_fund VARCHAR(500),
     FOREIGN KEY (sum_curso) REFERENCES Curso(cur_ide)
