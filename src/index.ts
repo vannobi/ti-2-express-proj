@@ -50,37 +50,15 @@ const main = async () => {
     ],
   });
 
-  Routes.forEach(route => {
-    let controller = new route.controller() as any;
-    if (route.action === 'one') {
-      app.get(route.route, async (req: Request, res: Response, next: NextFunction) => {
-        const result = await controller.one(req, res, next).catch(error => {
-          res.json(error);
-        });
-        res.json(result);
+  Routes.forEach(_route => {
+    let controller = new _route.controller() as any;
+    const { method, route, action, response } = _route;
+    app[method](route, async (req: Request, res: Response, next: NextFunction) => {
+      const result = await controller[action](req, res, next).catch(error => {
+        res.json(error);
       });
-    } else if (route.action === 'all') {
-      app.get(route.route, async (req: Request, res: Response, next: NextFunction) => {
-        const result = await controller.all(req, res, next).catch(error => {
-          res.json(error);
-        });
-        res.json(result);
-      });
-    } else if (route.action === 'save') {
-      app.post(route.route, async (req: Request, res: Response, next: NextFunction) => {
-        const result = await controller.save(req, res, next).catch(error => {
-          res.json(error);
-        });
-        res.json(result);
-      });
-    } else if (route.action === 'remove') {
-      app.delete(route.route, async (req: Request, res: Response, next: NextFunction) => {
-        const result = await controller.remove(req, res, next).catch(error => {
-          res.json(error);
-        });
-        res.json(result);
-      });
-    }
+      res[response](result);
+    });
   });
   app.listen(PORT);
   console.log(`listening on ${PORT}`);
@@ -89,3 +67,5 @@ const main = async () => {
 main().catch(error => {
   console.log(error);
 });
+
+const controller = async () => {};

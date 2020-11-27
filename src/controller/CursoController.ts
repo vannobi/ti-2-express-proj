@@ -28,22 +28,21 @@ export class CursoController {
         curCod,
         prerequisitos,
       } = request.body;
-      const newCurso = new Curso();
-      newCurso.curCredi = curCredi;
-      newCurso.curSem = curSem;
-      newCurso.curHorTeo = curHorTeo;
-      newCurso.curHorPra = curHorPra;
-      newCurso.curHorLab = curHorLab;
-      newCurso.curNom = curNom;
-      newCurso.curCod = curCod;
-      const insertedCurso = await transactionalEntityManager.save(newCurso);
+      const insertedCurso = await transactionalEntityManager.getRepository(Curso).save({
+        curCredi: curCredi,
+        curSem: curSem,
+        curHorTeo: curHorTeo,
+        curHorPra: curHorPra,
+        curHorLab: curHorLab,
+        curNom: curNom,
+        curCod: curCod,
+      });
       returnedObject.curso = insertedCurso;
       if (prerequisitos.length > 0) {
         for (let i = 0; i < prerequisitos.length; i++) {
-          const newPrereq = new Prerequisito();
-          newPrereq.curIde = insertedCurso.curIde;
-          newPrereq.curIdePre = prerequisitos[i];
-          const insertedPrereq = await transactionalEntityManager.save(newPrereq);
+          const insertedPrereq = await transactionalEntityManager
+            .getRepository(Prerequisito)
+            .save({ curIde: insertedCurso.curIde, curIdePre: prerequisitos[i] });
           returnedObject.prerequisitos.push(insertedPrereq);
         }
       }

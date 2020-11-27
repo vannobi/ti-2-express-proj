@@ -19,6 +19,9 @@ export class Sumilla extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'sum_ide' })
   sumIde: number;
 
+  @Column('int', { name: 'sum_version', nullable: true })
+  sumVersion: number | null;
+
   @Column('int', { name: 'sum_curso', nullable: true })
   sumCurso: number | null;
 

@@ -26,6 +26,9 @@ export class UnidadAcademica extends BaseEntity {
   @Column('varchar', { name: 'uni_aca_nom', nullable: true, length: 50 })
   uniAcaNom: string | null;
 
+  @Column('int', { name: 'uni_aca_horas', nullable: true })
+  uniAcaHoras: number | null;
+
   @Column('int', { name: 'sum_ide', nullable: true })
   sumIde: number | null;
 
