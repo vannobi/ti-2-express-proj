@@ -63,6 +63,7 @@ CREATE TABLE Unidad_academica(
     uni_aca_ide INTEGER AUTO_INCREMENT PRIMARY KEY,
     com_ide INTEGER,
     uni_aca_nom VARCHAR(50),
+    uni_aca_horas INTEGER,
     sum_ide INTEGER,
     FOREIGN KEY (sum_ide) REFERENCES Sumilla(sum_ide),
     FOREIGN KEY (com_ide) REFERENCES Competencia(com_ide)
