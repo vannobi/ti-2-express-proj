@@ -133,38 +133,74 @@ Para insertar un Curso con sus prerequisitos, se necesitan los Cursos IDs de los
   "prerequisitos": [4]
 }
 ```
+### Competencias
+```json
+[
+  {
+    "comNom": "C1",
+    "comDes": "La comprensión intelectual y la capacidad de aplicar las bases matemáticas y la teoria de la informática (Computer Science)"
+  },
+  {
+    "comNom": "C2",
+    "comDes": "Capacidad para tener una perspectiva crítica y creativa para identificar y resolver problemas utilizando el pensamiento computacional."
+  }
+]
+```
+
+### Resultados del Estudiante
+```json
+[
+  {
+    "restEstCod": "a",
+    "resEstNom": "Conocimientos de Computación",
+    "resEstDes": "La capacidad de aplicar conocimientos de matemáticas, ciencias, computación y una especialidad de computación apropiados para los resultados del estudiante y la disciplina del programa"
+  },
+  {
+    "restEstCod": "b",
+    "resEstNom": "Análisis de problemas",
+    "resEstDes": "La capacidad de identificar, formular, investigar literatura y resolver problemas complejos de computación y otras disciplinas relevantes en el dominio"
+  },
+  {
+    "restEstCod": "c",
+    "resEstNom": "Diseño y Desarrollo de Soluciones",
+    "resEstDes": "La capacidad de diseñar, implementar y evaluar soluciones a problemas complejos de computación. Diseña y evalúa sistemas, componentes o procesos que satisfacen las necesidades específicas"
+  }
+]
+```
 
 
 ### Sumilla & Unidad Academica & Bibtex & Autor & Bibliografia
 ```json
 {
-  "curIde": 1,
-  "sumFund": "fundamentacion text",
+  "curIde": 2,
+  "sumFund": "Para entender las técnicas computacionales avanzadas, los estudiantes deberán de tener un fuerte conocimiento de las diversas estructuras discretas y algebraicas, estructuras que serán implementadas y en algunos casos aplicadas en criptografía.",
 	"sumVersion": 2020,
   "sumResultados": [
     {
-      "resEstIde": 8,
-      "sumResNivel": 1
+      "resEstIde": 1,
+      "sumResNivel": 0
     },
     {
-      "resEstIde": 10,
-      "sumResNivel": 2
+      "resEstIde": 2,
+      "sumResNivel": 1
     }
   ],
   "sumCompetencias": [
-		14, 2
+		1, 2
   ],
   "sumContenidos": [
     {
       "unidadAcademica": {
-        "uniAcaNom": "Sistemas de Bases Datos",
-        "uniAcaHoras": null,
+        "uniAcaNom": "Grafos, Árboles, Optimización y Emparejamiento",
+        "uniAcaHoras": 15,
         "comIde": 1
       },
-      "topico": {
+      "topicos": [
+				{
         "uniAcaIde": null,
         "topDes": "text"
-      },
+      	}
+			],
       "bibliografiaUnidad": {
         "uniAcaIde": null,
         "bibliografia": [
@@ -172,11 +208,6 @@ Para insertar un Curso con sus prerequisitos, se necesitan los Cursos IDs de los
             "new": true,
             "bibIde": null,
             "bibtex": "@book{feynman2011six,title={Six Not-So-Easy Pieces: Einstein's Relativity, Symmetry, and Space-Time},author={Feynman, R.P. and Leighton, R.B. and Sands, M.},isbn={9780465025282},series={Helix Books},edition={Fourth Edition},url={https://books.google.com.pe/books?id=gkjDYs100mgC},year={2011},publisher={Basic Books}}"
-          },
-          {
-            "new": false,
-            "bibIde": 2,
-            "bibtex": null
           }
         ]
       }
