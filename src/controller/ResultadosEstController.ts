@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { getRepository, getManager } from 'typeorm';
 import { NextFunction, Request, Response } from 'express';
 import { ResultadosEstudiante } from '../entities/ResultadosEstudiante';
 

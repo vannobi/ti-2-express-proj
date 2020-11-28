@@ -16,38 +16,67 @@ export class CursoController {
   }
 
   async save(request: Request, response: Response, next: NextFunction) {
-    let returnedObject = { curso: null, prerequisitos: [] };
-    await getManager().transaction(async transactionalEntityManager => {
-      const {
-        curCredi,
-        curSem,
-        curHorTeo,
-        curHorPra,
-        curHorLab,
-        curNom,
-        curCod,
-        prerequisitos,
-      } = request.body;
-      const insertedCurso = await this.cursoRepository.save({
-        curCredi: curCredi,
-        curSem: curSem,
-        curHorTeo: curHorTeo,
-        curHorPra: curHorPra,
-        curHorLab: curHorLab,
-        curNom: curNom,
-        curCod: curCod,
-      });
-      returnedObject.curso = insertedCurso;
-      if (prerequisitos.length > 0) {
-        for (let i = 0; i < prerequisitos.length; i++) {
-          const insertedPrereq = await this.prerequisitosRepository.save({
-            curIde: insertedCurso.curIde,
-            curIdePre: prerequisitos[i],
-          });
-          returnedObject.prerequisitos.push(insertedPrereq);
+    let returnedObject = [];
+    if (request.body instanceof Array) {
+      await getManager()
+        .transaction(async transactionalEntityManager => {
+          for (let cur of request.body) {
+            const { prerequisitos } = cur;
+            const insertedCurso = await transactionalEntityManager
+              .getRepository(Curso)
+              .save({
+                curCredi: cur.curCredi,
+                curSem: cur.curSem,
+                curHorTeo: cur.curHorTeo,
+                curHorPra: cur.curHorPra,
+                curHorLab: cur.curHorLab,
+                curNom: cur.curNom,
+                curCod: cur.curCod,
+              });
+            returnedObject.push(insertedCurso);
+            if (prerequisitos.length > 0) {
+              for (let i = 0; i < prerequisitos.length; i++) {
+                const insertedPrereq = await transactionalEntityManager
+                  .getRepository(Prerequisito)
+                  .save({
+                    curIde: insertedCurso.curIde,
+                    curIdePre: prerequisitos[i],
+                  });
+                returnedObject.push(insertedPrereq);
+              }
+            }
+          }
+        })
+        .catch(error => returnedObject.push(error));
+      return returnedObject;
+    }
+    await getManager()
+      .transaction(async transactionalEntityManager => {
+        const { prerequisitos } = request.body;
+
+        const insertedCurso = await transactionalEntityManager.getRepository(Curso).save({
+          curCredi: request.body.curCredi,
+          curSem: request.body.curSem,
+          curHorTeo: request.body.curHorTeo,
+          curHorPra: request.body.curHorPra,
+          curHorLab: request.body.curHorLab,
+          curNom: request.body.curNom,
+          curCod: request.body.curCod,
+        });
+        returnedObject.push(insertedCurso);
+        if (prerequisitos.length > 0) {
+          for (let i = 0; i < prerequisitos.length; i++) {
+            const insertedPrereq = await transactionalEntityManager
+              .getRepository(Prerequisito)
+              .save({
+                curIde: insertedCurso.curIde,
+                curIdePre: prerequisitos[i],
+              });
+            returnedObject.push(insertedPrereq);
+          }
         }
-      }
-    });
+      })
+      .catch(error => returnedObject.push(error));
     return returnedObject;
   }
 
