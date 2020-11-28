@@ -134,3 +134,53 @@ Para insertar un Curso con sus prerequisitos, se necesitan los Cursos IDs de los
 }
 ```
 
+
+### Sumilla & Unidad Academica & Bibtex & Autor & Bibliografia
+```json
+{
+  "curIde": 1,
+  "sumFund": "fundamentacion text",
+	"sumVersion": 2020,
+  "sumResultados": [
+    {
+      "resEstIde": 8,
+      "sumResNivel": 1
+    },
+    {
+      "resEstIde": 10,
+      "sumResNivel": 2
+    }
+  ],
+  "sumCompetencias": [
+		14, 2
+  ],
+  "sumContenidos": [
+    {
+      "unidadAcademica": {
+        "uniAcaNom": "Sistemas de Bases Datos",
+        "uniAcaHoras": null,
+        "comIde": 1
+      },
+      "topico": {
+        "uniAcaIde": null,
+        "topDes": "text"
+      },
+      "bibliografiaUnidad": {
+        "uniAcaIde": null,
+        "bibliografia": [
+          {
+            "new": true,
+            "bibIde": null,
+            "bibtex": "@book{feynman2011six,title={Six Not-So-Easy Pieces: Einstein's Relativity, Symmetry, and Space-Time},author={Feynman, R.P. and Leighton, R.B. and Sands, M.},isbn={9780465025282},series={Helix Books},edition={Fourth Edition},url={https://books.google.com.pe/books?id=gkjDYs100mgC},year={2011},publisher={Basic Books}}"
+          },
+          {
+            "new": false,
+            "bibIde": 2,
+            "bibtex": null
+          }
+        ]
+      }
+    }
+  ]
+}
+```
