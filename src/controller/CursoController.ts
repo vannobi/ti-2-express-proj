@@ -15,6 +15,25 @@ export class CursoController {
     return this.cursoRepository.findOne(request.params.id);
   }
 
+  async byYear(request: Request, response: Response, next: NextFunction) {
+    if (request.params.year === '1') {
+      return this.cursoRepository.find({ where: [{ curSem: 1 }, { curSem: 2 }] });
+    } else if (request.params.year === '2') {
+      return this.cursoRepository.find({ where: [{ curSem: 3 }, { curSem: 4 }] });
+    } else if (request.params.year === '3') {
+      return this.cursoRepository.find({ where: [{ curSem: 5 }, { curSem: 6 }] });
+    } else if (request.params.year === '4') {
+      return this.cursoRepository.find({ where: [{ curSem: 7 }, { curSem: 8 }] });
+    } else if (request.params.year === '5') {
+      return this.cursoRepository.find({ where: [{ curSem: 9 }, { curSem: 10 }] });
+    }
+    return [];
+  }
+
+  async bySemester(request: Request, response: Response, next: NextFunction) {
+    return this.cursoRepository.find({ where: { curSem: request.params.semester } });
+  }
+
   async save(request: Request, response: Response, next: NextFunction) {
     let returnedObject = [];
     if (request.body instanceof Array) {
