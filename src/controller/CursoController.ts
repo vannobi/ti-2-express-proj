@@ -1,5 +1,5 @@
 import { getRepository, getManager } from 'typeorm';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, request, Request, Response } from 'express';
 import { Curso } from '../entities/Curso';
 import { Prerequisito } from '../entities/Prerequisito';
 
@@ -28,7 +28,7 @@ export class CursoController {
         curCod,
         prerequisitos,
       } = request.body;
-      const insertedCurso = await transactionalEntityManager.getRepository(Curso).save({
+      const insertedCurso = await this.cursoRepository.save({
         curCredi: curCredi,
         curSem: curSem,
         curHorTeo: curHorTeo,
@@ -40,9 +40,10 @@ export class CursoController {
       returnedObject.curso = insertedCurso;
       if (prerequisitos.length > 0) {
         for (let i = 0; i < prerequisitos.length; i++) {
-          const insertedPrereq = await transactionalEntityManager
-            .getRepository(Prerequisito)
-            .save({ curIde: insertedCurso.curIde, curIdePre: prerequisitos[i] });
+          const insertedPrereq = await this.prerequisitosRepository.save({
+            curIde: insertedCurso.curIde,
+            curIdePre: prerequisitos[i],
+          });
           returnedObject.prerequisitos.push(insertedPrereq);
         }
       }
@@ -53,5 +54,11 @@ export class CursoController {
   async remove(request: Request, response: Response, next: NextFunction) {
     let cursoToRemove = await this.cursoRepository.findOne(request.params.id);
     return this.cursoRepository.remove(cursoToRemove);
+  }
+
+  async allPrerequisitos(request: Request, response: Response, next: NextFunction) {
+    return await this.prerequisitosRepository.find({
+      where: { curIde: request.params.id },
+    });
   }
 }
