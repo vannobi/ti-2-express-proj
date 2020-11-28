@@ -4,6 +4,8 @@ import { resultEstRoutes } from './resultadosEstudiante';
 import { sumillaRoutes } from './sumilla';
 import { autorRoutes } from './autor';
 import { bibliografiaRoutes } from './bibliografia';
+import { topicoRoutes } from './topico';
+
 
 export const Routes = [
   ...competenciaRoutes,
@@ -12,4 +14,5 @@ export const Routes = [
   ...sumillaRoutes,
   ...autorRoutes,
   ...bibliografiaRoutes,
+  ...topicoRoutes
 ];
