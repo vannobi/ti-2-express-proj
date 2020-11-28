@@ -1,13 +1,14 @@
 import Cite from 'citation-js';
 
-interface Bib {
+export interface Bib {
   title: string;
-  author: string[];
+  author: any[];
   publisher: string;
   URL: string;
   edition: string;
   type: string;
   id: string;
+  year: number;
 }
 
 export const extractBookFeatures = str => {
@@ -24,6 +25,7 @@ export const extractBookFeatures = str => {
     edition: book.data[0].edition,
     type: book.data[0].type,
     id: book.data[0].id,
+    year: book.data[0].issued['date-parts'][0][0],
   };
   return newBib;
 };
