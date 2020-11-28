@@ -10,11 +10,132 @@ import { Bibliografia } from '../entities/Bibliografia';
 import { BibliografiaUnidad } from '../entities/BibliografiaUnidad';
 import { Autor } from '../entities/Autor';
 import { AutorBibliografia } from '../entities/AutorBibliografia';
+import { Curso } from '../entities/Curso';
+import { ResultadosEstudiante } from '../entities/ResultadosEstudiante';
+import { Competencia } from '../entities/Competencia';
+
+export interface FullSumilla {
+  informacionGeneral: {
+    semestre: number;
+    creditos: number;
+    horasDelCurso: {
+      teoria: number;
+      laboratorio: number;
+      practica: number;
+    };
+    prerequisitos: any[];
+  };
+  fundamentacion: string;
+  nivelesDeResultadoDelEstudiante: any[];
+  competenciasDelCurso: any[];
+  unidadesAcademicas: any[];
+  referencias: any[];
+}
 
 export class SumillasController {
   private sumRepo = getRepository(Sumilla);
   async all(request: Request, response: Response, next: NextFunction) {
     return this.sumRepo.find();
+  }
+
+  async byCursoId(request: Request, response: Response, next: NextFunction) {
+    return this.sumRepo.find({ where: { sumCurso: request.params.id } });
+  }
+
+  async fullSumillabyId(request: Request, response: Response, next: NextFunction) {
+    let fullSumilla = <FullSumilla>{};
+    await getManager()
+      .transaction(async transactionalEntityManager => {
+        const sumilla = await transactionalEntityManager
+          .getRepository(Sumilla)
+          .findOne({ where: { sumIde: request.params.id } });
+        console.log('____SUMILLA____');
+        console.log(sumilla);
+        //1. informacion general
+        const curso = await transactionalEntityManager
+          .getRepository(Curso)
+          .findOne({ where: { curIde: sumilla.sumCurso } });
+        fullSumilla.informacionGeneral = {
+          creditos: curso.curCredi,
+          semestre: curso.curSem,
+          horasDelCurso: {
+            laboratorio: curso.curHorLab,
+            practica: curso.curHorPra,
+            teoria: curso.curHorTeo,
+          },
+          prerequisitos: null,
+        };
+
+        //2. fundamentacion
+        fullSumilla.fundamentacion = sumilla.sumFund;
+
+        //3. Niveles de resultados del estudiante
+        fullSumilla.nivelesDeResultadoDelEstudiante = [];
+        for (let sumillaResultados of await transactionalEntityManager
+          .getRepository(SumillaResultado)
+          .find({ where: { sumIde: request.params.id } })) {
+          fullSumilla.nivelesDeResultadoDelEstudiante.push({
+            resultado: await transactionalEntityManager
+              .getRepository(ResultadosEstudiante)
+              .findOne({ where: { resEstIde: sumillaResultados.resEstIde } }),
+            nivel: sumillaResultados.sumResNivel,
+          });
+        }
+
+        //4. Competencias
+        fullSumilla.competenciasDelCurso = [];
+        for (let sumillaCompetencias of await transactionalEntityManager
+          .getRepository(SumillaCompetencia)
+          .find({ where: { sumIde: request.params.id } })) {
+          fullSumilla.competenciasDelCurso.push({
+            competencia: await transactionalEntityManager
+              .getRepository(Competencia)
+              .findOne({ where: { comIde: sumillaCompetencias.comIde } }),
+          });
+        }
+        //5. Unidades Academicas
+        fullSumilla.unidadesAcademicas = [];
+        for (let unidadesAcademicas of await transactionalEntityManager
+          .getRepository(UnidadAcademica)
+          .find({ where: { sumIde: request.params.id } })) {
+          const _t = await transactionalEntityManager
+            .getRepository(BibliografiaUnidad)
+            .find({
+              where: {
+                uniAcaIde: unidadesAcademicas.uniAcaIde,
+              },
+            });
+          fullSumilla.unidadesAcademicas.push({
+            Competencias: unidadesAcademicas.comIde,
+            Topicos: await transactionalEntityManager
+              .getRepository(Topico)
+              .find({ where: { uniAcaIde: unidadesAcademicas.uniAcaIde } }),
+            Bibliografia: await Promise.all(
+              _t.map(
+                async _bu =>
+                  await transactionalEntityManager.getRepository(Bibliografia).findOne({
+                    where: {
+                      bibIde: _bu.bibIde,
+                    },
+                  })
+              )
+            ),
+          });
+        }
+
+        // 6. Bibiografia
+        // fullSumilla.referencias = [];
+        // fullSumilla.referencias.add(
+        //   await getRepository(UnidadAcademica).find({
+        //     where: {
+        //       sumIde: request.params.id,
+        //     },
+        //   })
+        // );
+      })
+      .catch(error => console.log(error));
+    console.log(fullSumilla);
+    return fullSumilla;
   }
   // async one(request: Request, response: Response, next: NextFunction) {
   //   return this.cursoRepository.findOne(request.params.id);
@@ -60,7 +181,7 @@ export class SumillasController {
         for (let comp of sumCompetencias) {
           let _Comp = await transactionalEntityManager
             .getRepository(SumillaCompetencia)
-            .save({ comIde: comp });
+            .save({ comIde: comp, sumIde: insertedSumilla.sumIde });
           returnedObj.push(_Comp);
         }
         // ACTION 4

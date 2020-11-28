@@ -2,6 +2,20 @@ import { SumillasController } from '../controller/SumillaController';
 export const sumillaRoutes = [
   {
     method: 'get',
+    route: '/sumillas/cursoid/:id',
+    controller: SumillasController,
+    action: 'byCursoId',
+    response: 'json',
+  },
+  {
+    method: 'get',
+    route: '/sumillas/full/:id',
+    controller: SumillasController,
+    action: 'fullSumillabyId',
+    response: 'json',
+  },
+  {
+    method: 'get',
     route: '/sumillas',
     controller: SumillasController,
     action: 'all',
