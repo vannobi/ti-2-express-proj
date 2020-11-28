@@ -9,6 +9,20 @@ export const cursoRoutes = [
   },
   {
     method: 'get',
+    route: '/cursos/year/:year',
+    controller: CursoController,
+    action: 'byYear',
+    response: 'json',
+  },
+  {
+    method: 'get',
+    route: '/cursos/semestre/:semester',
+    controller: CursoController,
+    action: 'bySemester',
+    response: 'json',
+  },
+  {
+    method: 'get',
     route: '/cursos/:id/prerequisito',
     controller: CursoController,
     action: 'allPrerequisitos',
