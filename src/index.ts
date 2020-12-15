@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import express from 'express';
+import cors from 'cors';
 import { createConnection } from 'typeorm';
 import path from 'path';
 import { Request, Response, NextFunction } from 'express';
@@ -22,6 +23,7 @@ const PORT = 3000;
 const main = async () => {
   const app = express() as any;
   app.use(express.json());
+  app.use(cors());
   const conn = await createConnection({
     type: 'mysql',
     host: 'localhost',
