@@ -13,6 +13,9 @@ import { AutorBibliografia } from '../entities/AutorBibliografia';
 import { Curso } from '../entities/Curso';
 import { ResultadosEstudiante } from '../entities/ResultadosEstudiante';
 import { Competencia } from '../entities/Competencia';
+import pdf from 'pdfkit';
+import fs from 'fs';
+import { dirname } from 'path';
 
 export interface FullSumilla {
   informacionGeneral: {
@@ -40,6 +43,118 @@ export class SumillasController {
 
   async byCursoId(request: Request, response: Response, next: NextFunction) {
     return this.sumRepo.find({ where: { sumCurso: request.params.id } });
+  }
+
+  async fullPDFSumillaById(request: Request, response: Response, next: NextFunction) {
+    let fullSumilla = <FullSumilla>{};
+    await getManager()
+      .transaction(async transactionalEntityManager => {
+        const sumilla = await transactionalEntityManager
+          .getRepository(Sumilla)
+          .findOne({ where: { sumIde: request.params.id } });
+        console.log('____SUMILLA____');
+        console.log(sumilla);
+        //1. informacion general
+        const curso = await transactionalEntityManager
+          .getRepository(Curso)
+          .findOne({ where: { curIde: sumilla.sumCurso } });
+        fullSumilla.informacionGeneral = {
+          creditos: curso.curCredi,
+          semestre: curso.curSem,
+          horasDelCurso: {
+            laboratorio: curso.curHorLab,
+            practica: curso.curHorPra,
+            teoria: curso.curHorTeo,
+          },
+          prerequisitos: null,
+        };
+
+        //2. fundamentacion
+        fullSumilla.fundamentacion = sumilla.sumFund;
+
+        //3. Niveles de resultados del estudiante
+        fullSumilla.nivelesDeResultadoDelEstudiante = [];
+        for (let sumillaResultados of await transactionalEntityManager
+          .getRepository(SumillaResultado)
+          .find({ where: { sumIde: request.params.id } })) {
+          fullSumilla.nivelesDeResultadoDelEstudiante.push({
+            resultado: await transactionalEntityManager
+              .getRepository(ResultadosEstudiante)
+              .findOne({ where: { resEstIde: sumillaResultados.resEstIde } }),
+            nivel: sumillaResultados.sumResNivel,
+          });
+        }
+
+        //4. Competencias
+        fullSumilla.competenciasDelCurso = [];
+        for (let sumillaCompetencias of await transactionalEntityManager
+          .getRepository(SumillaCompetencia)
+          .find({ where: { sumIde: request.params.id } })) {
+          fullSumilla.competenciasDelCurso.push({
+            competencia: await transactionalEntityManager
+              .getRepository(Competencia)
+              .findOne({ where: { comIde: sumillaCompetencias.comIde } }),
+          });
+        }
+        //5. Unidades Academicas
+        fullSumilla.unidadesAcademicas = [];
+        for (let unidadesAcademicas of await transactionalEntityManager
+          .getRepository(UnidadAcademica)
+          .find({ where: { sumIde: request.params.id } })) {
+          const _t = await transactionalEntityManager
+            .getRepository(BibliografiaUnidad)
+            .find({
+              where: {
+                uniAcaIde: unidadesAcademicas.uniAcaIde,
+              },
+            });
+          fullSumilla.unidadesAcademicas.push({
+            Competencias: unidadesAcademicas.comIde,
+            Topicos: await transactionalEntityManager
+              .getRepository(Topico)
+              .find({ where: { uniAcaIde: unidadesAcademicas.uniAcaIde } }),
+            Bibliografia: await Promise.all(
+              _t.map(
+                async _bu =>
+                  await transactionalEntityManager.getRepository(Bibliografia).findOne({
+                    where: {
+                      bibIde: _bu.bibIde,
+                    },
+                  })
+              )
+            ),
+          });
+        }
+
+        // 6. Bibiografia
+        // fullSumilla.referencias = [];
+        // fullSumilla.referencias.add(
+        //   await getRepository(UnidadAcademica).find({
+        //     where: {
+        //       sumIde: request.params.id,
+        //     },
+        //   })
+        // );
+      })
+      .catch(error => console.log(error));
+
+    let doc = new pdf({ margin: 50 });
+    // doc.
+    doc.pipe(fs.createWriteStream(__dirname + '/pdfs/out.pdf'));
+    doc.text(JSON.stringify(fullSumilla));
+    doc.end();
+    // response.writeHead(200, { 'Content-type': 'application/pdf' });
+    // const file = __dirname + '/pdfs/out.pdf';
+    // fs.access(file, fs.constants.F_OK, error => {
+    //   console.log(`${file} ${error ? 'does not exist' : 'exists'}`);
+    // });
+    // let returnedFile = null;
+    // fs.readFile(file, (error, content) => {
+    //   if (!error) {
+    //     returnedFile = content;
+    //   }
+    // });
+    // return file;
   }
 
   async fullSumillabyId(request: Request, response: Response, next: NextFunction) {

@@ -7,6 +7,14 @@ export const sumillaRoutes = [
     action: 'byCursoId',
     response: 'json',
   },
+  // fullPDFSumillaById
+  {
+    method: 'get',
+    route: '/sumillas/pdf/full/:id',
+    controller: SumillasController,
+    action: 'fullPDFSumillaById',
+    response: 'download',
+  },
   {
     method: 'get',
     route: '/sumillas/full/:id',
