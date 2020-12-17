@@ -69,5 +69,3 @@ const main = async () => {
 main().catch(error => {
   console.log(error);
 });
-
-const controller = async () => {};
